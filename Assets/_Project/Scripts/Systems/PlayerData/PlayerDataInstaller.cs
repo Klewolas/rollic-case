@@ -7,11 +7,8 @@ namespace RollicCase.Systems.PlayerData
     [CreateAssetMenu(fileName = "SO_PlayerDataInstaller", menuName = "RollicCase/Installers/Player Data Installer")]
     public sealed class PlayerDataInstaller : ScriptableObjectInstaller<PlayerDataInstaller>
     {
-        [SerializeField] private PlayerDataConfig _config;
-
         public override void InstallBindings()
         {
-            Container.BindInstance(_config);
             Container.Bind<IDataStorage>().To<FileDataStorage>().AsSingle();
             Container.Bind<IDataSerializer>().To<JsonDataSerializer>().AsSingle();
             Container.Bind<ISaveScheduler>().To<NextFrameSaveScheduler>().AsSingle();

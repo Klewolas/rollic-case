@@ -12,15 +12,13 @@ namespace RollicCase.Splash
     {
         private readonly ISceneLoader _sceneLoader;
         private readonly IPlayerDataService _playerDataService;
-        private readonly SceneConfig _sceneConfig;
         private readonly SplashConfig _splashConfig;
         private readonly CancellationTokenSource _cancellation = new CancellationTokenSource();
 
-        public SplashFlow(ISceneLoader sceneLoader, IPlayerDataService playerDataService, SceneConfig sceneConfig, SplashConfig splashConfig)
+        public SplashFlow(ISceneLoader sceneLoader, IPlayerDataService playerDataService, SplashConfig splashConfig)
         {
             _sceneLoader = sceneLoader;
             _playerDataService = playerDataService;
-            _sceneConfig = sceneConfig;
             _splashConfig = splashConfig;
         }
 
@@ -41,7 +39,7 @@ namespace RollicCase.Splash
                 UniTask.Delay(TimeSpan.FromSeconds(_splashConfig.MinimumDisplaySeconds), cancellationToken: cancellationToken),
                 _playerDataService.LoadAllAsync(cancellationToken));
 
-            await _sceneLoader.LoadAsync(_sceneConfig.MapScene, cancellationToken);
+            await _sceneLoader.LoadAsync(SceneNames.Map, cancellationToken);
         }
     }
 }

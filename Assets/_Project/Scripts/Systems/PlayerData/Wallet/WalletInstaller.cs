@@ -8,13 +8,14 @@ namespace RollicCase.Systems.PlayerData.Wallet
     [CreateAssetMenu(fileName = "SO_WalletInstaller", menuName = "RollicCase/Installers/Wallet Installer")]
     public sealed class WalletInstaller : ScriptableObjectInstaller<WalletInstaller>
     {
+        private const string FileName = "wallet.json";
+
         [SerializeField] private ConsumableCatalog _catalog;
-        [SerializeField] private string _walletFileName;
 
         public override void InstallBindings()
         {
             Container.BindInstance(_catalog);
-            Container.BindPersistentModel(_walletFileName, () => new WalletModel());
+            Container.BindPersistentModel(FileName, () => new WalletModel());
 
             Container.Bind<ITransactionValidator>().To<NonZeroAmountValidator>().AsSingle();
             Container.Bind<ITransactionValidator>().To<KnownItemValidator>().AsSingle();

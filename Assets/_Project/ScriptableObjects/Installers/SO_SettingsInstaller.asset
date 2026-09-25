@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ea9a41872975e49a21476c71705450, type: 3}
   m_Name: SO_SettingsInstaller
   m_EditorClassIdentifier: 
-  _fileName: settings.json

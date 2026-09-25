@@ -7,11 +7,11 @@ namespace RollicCase.Systems.PlayerData.Core
     [CreateAssetMenu(fileName = "SO_CoreInstaller", menuName = "RollicCase/Installers/Core Installer")]
     public sealed class CoreInstaller : ScriptableObjectInstaller<CoreInstaller>
     {
-        [SerializeField] private string _fileName;
+        private const string FileName = "core.json";
 
         public override void InstallBindings()
         {
-            Container.BindPersistentModel(_fileName, () => new CoreModel());
+            Container.BindPersistentModel(FileName, () => new CoreModel());
             Container.Bind<ICoreHandler>().To<CoreHandler>().AsSingle();
         }
     }

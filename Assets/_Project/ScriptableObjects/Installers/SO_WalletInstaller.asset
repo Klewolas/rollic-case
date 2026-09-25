@@ -13,4 +13,3 @@ MonoBehaviour:
   m_Name: SO_WalletInstaller
   m_EditorClassIdentifier: 
   _catalog: {fileID: 11400000, guid: 6f8dcbb9f2003244fa312c8e8656692b, type: 2}
-  _walletFileName: wallet.json

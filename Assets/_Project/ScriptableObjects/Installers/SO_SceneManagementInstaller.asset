@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3876b644d0a892a418caf5274ab9df4c, type: 3}
   m_Name: SO_SceneManagementInstaller
   m_EditorClassIdentifier: 
-  _sceneConfig: {fileID: 11400000, guid: 692fedc82e0d38e49aeb217ed33d4933, type: 2}

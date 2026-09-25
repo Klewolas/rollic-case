@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376cdf2ddf7fd90409bed5df82b3cb54, type: 3}
   m_Name: SO_CoreInstaller
   m_EditorClassIdentifier: 
-  _fileName: core.json

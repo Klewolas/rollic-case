@@ -8,15 +8,11 @@ namespace RollicCase.Systems.PlayerData
     /// <summary>Stores data as files under the persistent data path and replaces them atomically.</summary>
     public sealed class FileDataStorage : IDataStorage
     {
-        private readonly string _directory;
-        private readonly string _temporarySuffix;
-        private readonly object _fileLock = new object();
+        private const string DirectoryName = "PlayerData";
+        private const string TemporaryFileSuffix = ".tmp";
 
-        public FileDataStorage(PlayerDataConfig config)
-        {
-            _directory = Path.Combine(Application.persistentDataPath, config.DirectoryName);
-            _temporarySuffix = config.TemporaryFileSuffix;
-        }
+        private readonly string _directory = Path.Combine(Application.persistentDataPath, DirectoryName);
+        private readonly object _fileLock = new object();
 
         public string Read(string key)
         {
@@ -29,7 +25,7 @@ namespace RollicCase.Systems.PlayerData
                     return File.ReadAllText(path);
                 }
 
-                string temporaryPath = path + _temporarySuffix;
+                string temporaryPath = path + TemporaryFileSuffix;
                 return File.Exists(temporaryPath) ? File.ReadAllText(temporaryPath) : null;
             }
         }
@@ -45,7 +41,7 @@ namespace RollicCase.Systems.PlayerData
             {
                 Directory.CreateDirectory(_directory);
                 string path = GetPath(key);
-                string temporaryPath = path + _temporarySuffix;
+                string temporaryPath = path + TemporaryFileSuffix;
                 File.WriteAllText(temporaryPath, content);
 
                 if (File.Exists(path))

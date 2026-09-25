@@ -7,11 +7,11 @@ namespace RollicCase.Systems.PlayerData.Settings
     [CreateAssetMenu(fileName = "SO_SettingsInstaller", menuName = "RollicCase/Installers/Settings Installer")]
     public sealed class SettingsInstaller : ScriptableObjectInstaller<SettingsInstaller>
     {
-        [SerializeField] private string _fileName;
+        private const string FileName = "settings.json";
 
         public override void InstallBindings()
         {
-            Container.BindPersistentModel(_fileName, () => new SettingsModel());
+            Container.BindPersistentModel(FileName, () => new SettingsModel());
             Container.Bind<ISettingsHandler>().To<SettingsHandler>().AsSingle();
         }
     }
