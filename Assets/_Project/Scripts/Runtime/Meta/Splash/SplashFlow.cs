@@ -1,22 +1,25 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using RollicCase.Systems.PlayerData;
 using RollicCase.Systems.SceneManagement;
 using Zenject;
 
 namespace RollicCase.Meta.Splash
 {
-    /// <summary>Shows the splash for its minimum duration, then opens the map.</summary>
+    /// <summary>Loads the player data while the splash shows for at least its minimum duration, then opens the map.</summary>
     public sealed class SplashFlow : IInitializable, IDisposable
     {
         private readonly ISceneLoader _sceneLoader;
+        private readonly IPlayerDataService _playerDataService;
         private readonly SceneConfig _sceneConfig;
         private readonly SplashConfig _splashConfig;
         private readonly CancellationTokenSource _cancellation = new CancellationTokenSource();
 
-        public SplashFlow(ISceneLoader sceneLoader, SceneConfig sceneConfig, SplashConfig splashConfig)
+        public SplashFlow(ISceneLoader sceneLoader, IPlayerDataService playerDataService, SceneConfig sceneConfig, SplashConfig splashConfig)
         {
             _sceneLoader = sceneLoader;
+            _playerDataService = playerDataService;
             _sceneConfig = sceneConfig;
             _splashConfig = splashConfig;
         }
@@ -34,7 +37,10 @@ namespace RollicCase.Meta.Splash
 
         private async UniTaskVoid RunAsync(CancellationToken cancellationToken)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(_splashConfig.MinimumDisplaySeconds), cancellationToken: cancellationToken);
+            await UniTask.WhenAll(
+                UniTask.Delay(TimeSpan.FromSeconds(_splashConfig.MinimumDisplaySeconds), cancellationToken: cancellationToken),
+                _playerDataService.LoadAllAsync(cancellationToken));
+
             await _sceneLoader.LoadAsync(_sceneConfig.MapScene, cancellationToken);
         }
     }
