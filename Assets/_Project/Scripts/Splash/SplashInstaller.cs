@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace RollicCase.Meta.Splash
+namespace RollicCase.Splash
 {
     /// <summary>Binds the splash scene flow and its configuration.</summary>
     public sealed class SplashInstaller : MonoInstaller

@@ -5,7 +5,7 @@ using RollicCase.Systems.PlayerData;
 using RollicCase.Systems.SceneManagement;
 using Zenject;
 
-namespace RollicCase.Meta.Splash
+namespace RollicCase.Splash
 {
     /// <summary>Loads the player data while the splash shows for at least its minimum duration, then opens the map.</summary>
     public sealed class SplashFlow : IInitializable, IDisposable

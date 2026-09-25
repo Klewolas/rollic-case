@@ -2,7 +2,8 @@
     "name": "RollicCase.Tests",
     "rootNamespace": "RollicCase.Tests",
     "references": [
-        "RollicCase.Runtime",
+        "RollicCase.Systems.SceneManagement",
+        "RollicCase.Systems.PlayerData",
         "UniTask",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"

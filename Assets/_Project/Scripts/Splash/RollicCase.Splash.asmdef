@@ -1,0 +1,19 @@
+{
+    "name": "RollicCase.Splash",
+    "rootNamespace": "RollicCase.Splash",
+    "references": [
+        "RollicCase.Systems.SceneManagement",
+        "RollicCase.Systems.PlayerData",
+        "Zenject",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

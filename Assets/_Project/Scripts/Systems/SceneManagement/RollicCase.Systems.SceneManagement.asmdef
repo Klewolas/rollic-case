@@ -1,0 +1,17 @@
+{
+    "name": "RollicCase.Systems.SceneManagement",
+    "rootNamespace": "RollicCase.Systems.SceneManagement",
+    "references": [
+        "Zenject",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

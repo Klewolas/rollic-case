@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RollicCase.Meta.Splash
+namespace RollicCase.Splash
 {
     /// <summary>Tuning values for the splash screen.</summary>
     [CreateAssetMenu(fileName = "SO_SplashConfig", menuName = "RollicCase/Config/Splash Config")]

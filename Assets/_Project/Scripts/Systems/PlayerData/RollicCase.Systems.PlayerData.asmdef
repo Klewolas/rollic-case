@@ -1,11 +1,10 @@
 {
-    "name": "RollicCase.Runtime",
-    "rootNamespace": "RollicCase",
+    "name": "RollicCase.Systems.PlayerData",
+    "rootNamespace": "RollicCase.Systems.PlayerData",
     "references": [
+        "RollicCase.Systems.SceneManagement",
         "Zenject",
-        "UniTask",
-        "DOTween.Modules",
-        "UniTask.DOTween"
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
