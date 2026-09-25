@@ -4,6 +4,7 @@
     "references": [
         "RollicCase.Systems.SceneManagement",
         "RollicCase.Systems.PlayerData",
+        "RollicCase.UI",
         "UniTask",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
