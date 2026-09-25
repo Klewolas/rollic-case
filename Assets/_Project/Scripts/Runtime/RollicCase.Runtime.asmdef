@@ -3,7 +3,9 @@
     "rootNamespace": "RollicCase",
     "references": [
         "Zenject",
-        "UniTask"
+        "UniTask",
+        "DOTween.Modules",
+        "UniTask.DOTween"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
