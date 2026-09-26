@@ -47,7 +47,7 @@ namespace RollicCase.Gameplay.Logic
                 {
                     Vector2Int cell = block.Origin + block.Cells[c];
 
-                    if (!IsInside(level, cell))
+                    if (!LevelGeometry.IsInside(level.Width, level.Height, cell))
                     {
                         isOutOfBounds = true;
                     }
@@ -102,34 +102,21 @@ namespace RollicCase.Gameplay.Logic
             for (int i = 0; i < level.Doors.Count; i++)
             {
                 DoorData door = level.Doors[i];
-                int sideLength = door.Side.IsHorizontal() ? level.Width : level.Height;
 
-                if (door.Length < 1 || door.Start < 0 || door.Start + door.Length > sideLength)
+                if (!LevelGeometry.IsDoorSpanInside(level.Width, level.Height, door.Side, door.Start, door.Length))
                 {
                     issues.Add(new LevelIssue(LevelIssueType.DoorOutOfBounds, i));
                 }
 
                 for (int j = 0; j < i; j++)
                 {
-                    if (Overlap(door, level.Doors[j]))
+                    if (LevelGeometry.DoorsOverlap(level.Doors[j], door.Side, door.Start, door.Length))
                     {
                         issues.Add(new LevelIssue(LevelIssueType.DoorsOverlap, i));
                         break;
                     }
                 }
             }
-        }
-
-        private static bool Overlap(DoorData first, DoorData second)
-        {
-            return first.Side == second.Side
-                && first.Start < second.Start + second.Length
-                && second.Start < first.Start + first.Length;
-        }
-
-        private static bool IsInside(LevelData level, Vector2Int cell)
-        {
-            return cell.x >= 0 && cell.y >= 0 && cell.x < level.Width && cell.y < level.Height;
         }
 
         private static bool IsInRange(int value, int min, int max)

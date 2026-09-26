@@ -35,9 +35,29 @@ namespace RollicCase.Gameplay.Data
             _blocks.Add(block);
         }
 
+        public void SetBlock(int index, BlockData block)
+        {
+            _blocks[index] = block;
+        }
+
+        public void RemoveBlockAt(int index)
+        {
+            _blocks.RemoveAt(index);
+        }
+
         public void AddDoor(DoorData door)
         {
             _doors.Add(door);
+        }
+
+        public void SetDoor(int index, DoorData door)
+        {
+            _doors[index] = door;
+        }
+
+        public void RemoveDoorAt(int index)
+        {
+            _doors.RemoveAt(index);
         }
     }
 }

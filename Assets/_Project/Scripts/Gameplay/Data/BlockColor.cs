@@ -6,5 +6,9 @@ namespace RollicCase.Gameplay.Data
     [CreateAssetMenu(fileName = "SO_BlockColor_", menuName = "RollicCase/Gameplay/Block Color")]
     public sealed class BlockColor : ScriptableObject
     {
+        [SerializeField] private Color _displayColor = Color.white;
+
+        /// <summary>Flat color used wherever the color is shown without a material, such as the level editor.</summary>
+        public Color DisplayColor => _displayColor;
     }
 }

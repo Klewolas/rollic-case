@@ -160,7 +160,7 @@ namespace RollicCase.Gameplay.Logic
 
         private bool IsInside(Vector2Int cell)
         {
-            return cell.x >= 0 && cell.y >= 0 && cell.x < Width && cell.y < Height;
+            return LevelGeometry.IsInside(Width, Height, cell);
         }
 
         private int ToIndex(Vector2Int cell)
