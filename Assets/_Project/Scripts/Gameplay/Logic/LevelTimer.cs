@@ -16,8 +16,14 @@ namespace RollicCase.Gameplay.Logic
         /// <summary>Raised once when the remaining time reaches zero.</summary>
         public event Action Expired;
 
+        /// <summary>Raised with the new value when the remaining time, rounded up to whole seconds, changes.</summary>
+        public event Action<int> WholeSecondsChanged;
+
         public float RemainingSeconds => _remainingSeconds;
         public bool IsExpired => _remainingSeconds <= 0f;
+
+        /// <summary>Remaining time rounded up, as a countdown shows it.</summary>
+        public int RemainingWholeSeconds => Mathf.CeilToInt(_remainingSeconds);
 
         /// <summary>Advances the countdown by the elapsed time.</summary>
         public void Tick(float deltaSeconds)
@@ -27,7 +33,13 @@ namespace RollicCase.Gameplay.Logic
                 return;
             }
 
+            int previousWholeSeconds = RemainingWholeSeconds;
             _remainingSeconds = Mathf.Max(0f, _remainingSeconds - deltaSeconds);
+
+            if (RemainingWholeSeconds != previousWholeSeconds)
+            {
+                WholeSecondsChanged?.Invoke(RemainingWholeSeconds);
+            }
 
             if (IsExpired)
             {

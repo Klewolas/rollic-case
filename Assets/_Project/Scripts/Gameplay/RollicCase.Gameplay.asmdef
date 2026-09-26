@@ -4,7 +4,11 @@
     "references": [
         "RollicCase.Systems.PlayerData",
         "Zenject",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "RollicCase.Systems.SceneManagement",
+        "RollicCase.UI",
+        "UniTask",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -3,7 +3,7 @@ using Zenject;
 
 namespace RollicCase.UI.Popups
 {
-    /// <summary>Closes the top popup when the Android back button is pressed; the only per-frame check of the popup system.</summary>
+    /// <summary>Dismisses the top popup when the Android back button is pressed; the only per-frame check of the popup system.</summary>
     public sealed class PopupBackButtonHandler : ITickable
     {
         private readonly IPopupService _popupService;
@@ -17,7 +17,7 @@ namespace RollicCase.UI.Popups
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                _popupService.CloseTop();
+                _popupService.DismissTop();
             }
         }
     }

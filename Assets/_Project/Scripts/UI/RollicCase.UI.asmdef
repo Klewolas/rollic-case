@@ -4,7 +4,9 @@
     "references": [
         "Zenject",
         "UniTask",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "RollicCase.Systems.PlayerData",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

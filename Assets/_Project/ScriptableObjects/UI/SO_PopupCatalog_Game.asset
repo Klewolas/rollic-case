@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 489e687214585b542813ebccd19664e3, type: 3}
   m_Name: SO_PopupCatalog_Game
   m_EditorClassIdentifier: 
-  _prefabs: []
+  _prefabs:
+  - {fileID: 6451721724401567952, guid: 2cade90fdf512694bb4b12371d44d400, type: 3}
+  - {fileID: 3567741119519705520, guid: 3abe2a2e7d01e9c458d39b4564e8c2ba, type: 3}
+  - {fileID: 4159365987374794487, guid: 304b64929a1cfff4680118cd32734fbb, type: 3}

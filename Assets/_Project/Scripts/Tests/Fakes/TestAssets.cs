@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RollicCase.Gameplay.Data;
+using RollicCase.Gameplay.Flow;
 using RollicCase.Systems.PlayerData.Wallet;
 using UnityEditor;
 using UnityEngine;
@@ -38,6 +39,16 @@ namespace RollicCase.Tests.Fakes
 
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return catalog;
+        }
+
+        public LevelRewardConfig CreateLevelReward(ConsumableDefinition coin, int coinAmount)
+        {
+            var reward = Create<LevelRewardConfig>();
+            var serialized = new SerializedObject(reward);
+            serialized.FindProperty("_coin").objectReferenceValue = coin;
+            serialized.FindProperty("_coinAmount").intValue = coinAmount;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return reward;
         }
 
         public BlockColor CreateBlockColor()

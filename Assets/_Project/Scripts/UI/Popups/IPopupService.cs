@@ -11,5 +11,8 @@ namespace RollicCase.UI.Popups
 
         /// <summary>Closes the topmost popup and returns false when no popup is open.</summary>
         bool CloseTop();
+
+        /// <summary>Closes the topmost popup when it can be dismissed, as the back button does.</summary>
+        bool DismissTop();
     }
 }

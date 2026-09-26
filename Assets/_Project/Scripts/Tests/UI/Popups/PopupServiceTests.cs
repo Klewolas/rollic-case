@@ -123,6 +123,29 @@ namespace RollicCase.Tests.UI.Popups
             Assert.IsTrue(_withArgs.IsOpen);
         }
 
+        [Test]
+        public void DismissTop_TopCanBeDismissed_ClosesIt()
+        {
+            _service.Show<FakePopup>();
+
+            bool dismissed = _service.DismissTop();
+
+            Assert.IsTrue(dismissed);
+            Assert.IsFalse(_first.IsOpen);
+        }
+
+        [Test]
+        public void DismissTop_TopNeedsADecision_KeepsItOpen()
+        {
+            _first.CanDismiss = false;
+            _service.Show<FakePopup>();
+
+            bool dismissed = _service.DismissTop();
+
+            Assert.IsFalse(dismissed);
+            Assert.IsTrue(_first.IsOpen);
+        }
+
         private sealed class SecondFakePopup : FakePopup
         {
         }

@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _catalog: {fileID: 11400000, guid: 265a86a14126f5e4e822456dd4b1060e, type: 2}
+  _reward: {fileID: 11400000, guid: 56b380e0f4cf3414e9cec2b0656c9392, type: 2}
 --- !u!1001 &1991433457793110507
 PrefabInstance:
   m_ObjectHideFlags: 0

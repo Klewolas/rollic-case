@@ -13,6 +13,8 @@ namespace RollicCase.UI.Popups
         [SerializeField] private RectTransform _panel;
         [Tooltip("Optional. When assigned, tapping the dimmed background closes the popup.")]
         [SerializeField] private Button _dimmerButton;
+        [Tooltip("Whether the Android back button closes the popup. Turn it off for popups that need a decision.")]
+        [SerializeField] private bool _canDismiss;
 
         private PopupAnimationSettings _animation;
         private Sequence _transition;
@@ -22,6 +24,8 @@ namespace RollicCase.UI.Popups
 
         /// <summary>Raised after the hide animation has finished.</summary>
         public event Action Closed;
+
+        public bool CanDismiss => _canDismiss;
 
         [Inject]
         public void Construct(UIConfig config)

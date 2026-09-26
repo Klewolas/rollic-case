@@ -19,6 +19,9 @@ namespace RollicCase.Gameplay.View
         private readonly BlockView.Factory _blockFactory;
         private readonly MaterialPropertyBlock _tint = new MaterialPropertyBlock();
 
+        private Mesh _groundMesh;
+        private Mesh _rimMesh;
+
         public LevelViewBuilder(BoardModel board, BoardRootView root, BoardViewConfig config, BoardMeshBuilder boardMeshes,
             BlockMeshBuilder blockMeshes, DoorView.Factory doorFactory, BlockView.Factory blockFactory)
         {
@@ -33,8 +36,10 @@ namespace RollicCase.Gameplay.View
 
         public void Initialize()
         {
-            _root.Ground.sharedMesh = _boardMeshes.BuildGround(_board.Width, _board.Height);
-            _root.Rim.sharedMesh = _boardMeshes.BuildRim(_board);
+            _groundMesh = _boardMeshes.BuildGround(_board.Width, _board.Height);
+            _rimMesh = _boardMeshes.BuildRim(_board);
+            _root.Ground.sharedMesh = _groundMesh;
+            _root.Rim.sharedMesh = _rimMesh;
 
             foreach (DoorModel door in _board.Doors)
             {
@@ -53,8 +58,8 @@ namespace RollicCase.Gameplay.View
 
         public void Dispose()
         {
-            UnityEngine.Object.Destroy(_root.Ground.sharedMesh);
-            UnityEngine.Object.Destroy(_root.Rim.sharedMesh);
+            UnityEngine.Object.Destroy(_groundMesh);
+            UnityEngine.Object.Destroy(_rimMesh);
         }
 
         private MaterialPropertyBlock BlockTint(BlockModel block)

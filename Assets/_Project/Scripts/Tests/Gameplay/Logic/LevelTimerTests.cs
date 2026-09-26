@@ -28,6 +28,32 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
+        public void Tick_CrossesWholeSecond_RaisesWholeSecondsChanged()
+        {
+            var timer = new LevelTimer(10f);
+            int? raised = null;
+            timer.WholeSecondsChanged += seconds => raised = seconds;
+
+            timer.Tick(1.1f);
+
+            Assert.AreEqual(9, raised);
+            Assert.AreEqual(9, timer.RemainingWholeSeconds);
+        }
+
+        [Test]
+        public void Tick_WithinSameWholeSecond_DoesNotRaiseWholeSecondsChanged()
+        {
+            var timer = new LevelTimer(10f);
+            timer.Tick(1.1f);
+            int raisedCount = 0;
+            timer.WholeSecondsChanged += _ => raisedCount++;
+
+            timer.Tick(0.5f);
+
+            Assert.AreEqual(0, raisedCount);
+        }
+
+        [Test]
         public void Tick_AfterExpired_RaisesExpiredOnlyOnce()
         {
             var timer = new LevelTimer(1f);

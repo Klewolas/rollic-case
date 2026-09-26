@@ -8,6 +8,9 @@ namespace RollicCase.UI.Popups
         /// <summary>Raised when the popup asks to be closed, for example by its close button.</summary>
         event Action<IPopup> CloseRequested;
 
+        /// <summary>Whether the back button may close the popup; a popup that needs a decision returns false.</summary>
+        bool CanDismiss { get; }
+
         /// <summary>Shows the popup on top of the others.</summary>
         void Open();
 

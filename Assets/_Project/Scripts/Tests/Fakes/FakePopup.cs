@@ -8,6 +8,7 @@ namespace RollicCase.Tests.Fakes
     {
         public event Action<IPopup> CloseRequested;
 
+        public bool CanDismiss { get; set; } = true;
         public bool IsOpen { get; private set; }
         public int OpenCount { get; private set; }
 

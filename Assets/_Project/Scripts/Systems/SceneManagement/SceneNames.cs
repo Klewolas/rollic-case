@@ -4,5 +4,6 @@ namespace RollicCase.Systems.SceneManagement
     public static class SceneNames
     {
         public const string Map = "Map";
+        public const string Game = "Game";
     }
 }

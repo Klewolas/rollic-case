@@ -45,6 +45,11 @@ namespace RollicCase.UI.Popups
             return true;
         }
 
+        public bool DismissTop()
+        {
+            return _openPopups.Count > 0 && _openPopups[_openPopups.Count - 1].CanDismiss && CloseTop();
+        }
+
         private void Close(IPopup popup)
         {
             if (!_openPopups.Remove(popup))
