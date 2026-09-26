@@ -5,6 +5,7 @@
         "RollicCase.Systems.SceneManagement",
         "RollicCase.Systems.PlayerData",
         "RollicCase.UI",
+        "RollicCase.Gameplay",
         "UniTask",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"

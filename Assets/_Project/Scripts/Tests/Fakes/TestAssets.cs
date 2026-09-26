@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RollicCase.Gameplay.Data;
 using RollicCase.Systems.PlayerData.Wallet;
 using UnityEditor;
 using UnityEngine;
@@ -37,6 +38,19 @@ namespace RollicCase.Tests.Fakes
 
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return catalog;
+        }
+
+        public BlockColor CreateBlockColor()
+        {
+            return Create<BlockColor>();
+        }
+
+        public LevelData CreateLevel(int width, int height, int timerSeconds)
+        {
+            var level = Create<LevelData>();
+            level.SetSize(width, height);
+            level.SetTimer(timerSeconds);
+            return level;
         }
 
         public void DestroyAll()
