@@ -11,6 +11,7 @@ namespace RollicCase.Tests.Gameplay.Logic
     public sealed class BoardModelTests
     {
         private const int Size = 5;
+        private const float Tolerance = 1e-4f;
 
         private TestAssets _assets;
         private BlockColor _red;
@@ -59,82 +60,131 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
-        public void GetFreeDistance_OpenRow_ReturnsDistanceToWalls()
+        public void GetFreeTravel_OpenRow_ReturnsDistanceToWalls()
         {
             BlockModel block = Block(_red, 1, 2, Shapes.Single);
             BoardModel board = Board(new[] { block });
 
-            Assert.AreEqual(3, board.GetFreeDistance(block, Vector2Int.right));
-            Assert.AreEqual(1, board.GetFreeDistance(block, Vector2Int.left));
+            Assert.AreEqual(3f, board.GetFreeTravel(block, new Vector2(1f, 2f), Vector2Int.right), Tolerance);
+            Assert.AreEqual(1f, board.GetFreeTravel(block, new Vector2(1f, 2f), Vector2Int.left), Tolerance);
         }
 
         [Test]
-        public void GetFreeDistance_OtherBlockInPath_StopsBeforeIt()
+        public void GetFreeTravel_OtherBlockInPath_StopsFlushAgainstIt()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.Single);
             BlockModel blocker = Block(_blue, 3, 0, Shapes.Single);
             BoardModel board = Board(new[] { block, blocker });
 
-            Assert.AreEqual(2, board.GetFreeDistance(block, Vector2Int.right));
+            Assert.AreEqual(2f, board.GetFreeTravel(block, new Vector2(0f, 0f), Vector2Int.right), Tolerance);
         }
 
         [Test]
-        public void GetFreeDistance_OneCellOfShapeBlocked_LimitsWholeShape()
+        public void GetFreeTravel_BetweenCells_ReturnsTheRemainingFraction()
+        {
+            BlockModel block = Block(_red, 0, 0, Shapes.Single);
+            BlockModel blocker = Block(_blue, 3, 0, Shapes.Single);
+            BoardModel board = Board(new[] { block, blocker });
+
+            Assert.AreEqual(1.6f, board.GetFreeTravel(block, new Vector2(0.4f, 0f), Vector2Int.right), Tolerance);
+        }
+
+        [Test]
+        public void GetFreeTravel_TouchingTwoRows_IsStoppedByEitherRow()
+        {
+            BlockModel block = Block(_red, 0, 0, Shapes.Single);
+            BlockModel blocker = Block(_blue, 2, 1, Shapes.Single);
+            BoardModel board = Board(new[] { block, blocker });
+
+            Assert.AreEqual(1f, board.GetFreeTravel(block, new Vector2(0f, 0.5f), Vector2Int.right), Tolerance);
+        }
+
+        [Test]
+        public void GetFreeTravel_OneCellOfShapeBlocked_LimitsWholeShape()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.L);
             BlockModel blocker = Block(_blue, 3, 1, Shapes.Single);
             BoardModel board = Board(new[] { block, blocker });
 
-            Assert.AreEqual(2, board.GetFreeDistance(block, Vector2Int.right));
+            Assert.AreEqual(2f, board.GetFreeTravel(block, new Vector2(0f, 0f), Vector2Int.right), Tolerance);
         }
 
         [Test]
-        public void GetFreeDistance_OwnCellsInPath_AreNotObstacles()
+        public void GetFreeTravel_OwnCellsInPath_AreNotObstacles()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.Vertical2);
             BoardModel board = Board(new[] { block });
 
-            Assert.AreEqual(3, board.GetFreeDistance(block, Vector2Int.up));
+            Assert.AreEqual(3f, board.GetFreeTravel(block, new Vector2(0f, 0f), Vector2Int.up), Tolerance);
         }
 
         [Test]
-        public void GetFreeDistance_MoveRuleForbidsDirection_ReturnsZero()
+        public void GetFreeTravel_MoveRuleForbidsDirection_ReturnsZero()
         {
             BlockModel block = Block(_red, 1, 1, Shapes.Single, new FakeMoveRule(Vector2Int.right));
             BoardModel board = Board(new[] { block });
 
-            Assert.AreEqual(0, board.GetFreeDistance(block, Vector2Int.right));
+            Assert.AreEqual(0f, board.GetFreeTravel(block, new Vector2(1f, 1f), Vector2Int.right), Tolerance);
         }
 
         [Test]
-        public void GetFreeDistance_MoveRuleForbidsOtherDirection_ReturnsFreeCells()
+        public void GetFreeTravel_MoveRuleForbidsOtherDirection_ReturnsFreeCells()
         {
             BlockModel block = Block(_red, 1, 1, Shapes.Single, new FakeMoveRule(Vector2Int.right));
             BoardModel board = Board(new[] { block });
 
-            Assert.AreEqual(1, board.GetFreeDistance(block, Vector2Int.left));
+            Assert.AreEqual(1f, board.GetFreeTravel(block, new Vector2(1f, 1f), Vector2Int.left), Tolerance);
         }
 
         [Test]
-        public void Move_WithinFreeDistance_UpdatesPositionAndCells()
+        public void CanPlace_FreeCells_ReturnsTrue()
+        {
+            BlockModel block = Block(_red, 0, 0, Shapes.Horizontal2);
+            BoardModel board = Board(new[] { block });
+
+            Assert.IsTrue(board.CanPlace(block, new Vector2Int(1, 0)));
+        }
+
+        [Test]
+        public void CanPlace_OnAnotherBlock_ReturnsFalse()
+        {
+            BlockModel block = Block(_red, 0, 0, Shapes.Single);
+            BlockModel other = Block(_blue, 2, 2, Shapes.Single);
+            BoardModel board = Board(new[] { block, other });
+
+            Assert.IsFalse(board.CanPlace(block, new Vector2Int(2, 2)));
+        }
+
+        [Test]
+        public void CanPlace_PartlyOutsideBoard_ReturnsFalse()
+        {
+            BlockModel block = Block(_red, 0, 0, Shapes.Horizontal2);
+            BoardModel board = Board(new[] { block });
+
+            Assert.IsFalse(board.CanPlace(block, new Vector2Int(4, 0)));
+        }
+
+        [Test]
+        public void Place_FreeCells_UpdatesPositionAndCells()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.Single);
             BoardModel board = Board(new[] { block });
 
-            board.Move(block, Vector2Int.right, 2);
+            board.Place(block, new Vector2Int(2, 3));
 
-            Assert.AreEqual(new Vector2Int(2, 0), block.Position);
-            Assert.AreSame(block, board.GetBlockAt(new Vector2Int(2, 0)));
+            Assert.AreEqual(new Vector2Int(2, 3), block.Position);
+            Assert.AreSame(block, board.GetBlockAt(new Vector2Int(2, 3)));
             Assert.IsNull(board.GetBlockAt(new Vector2Int(0, 0)));
         }
 
         [Test]
-        public void Move_BeyondFreeDistance_Throws()
+        public void Place_OnAnotherBlock_Throws()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.Single);
-            BoardModel board = Board(new[] { block });
+            BlockModel other = Block(_blue, 1, 0, Shapes.Single);
+            BoardModel board = Board(new[] { block, other });
 
-            Assert.Throws<InvalidOperationException>(() => board.Move(block, Vector2Int.left, 1));
+            Assert.Throws<InvalidOperationException>(() => board.Place(block, new Vector2Int(1, 0)));
         }
 
         [Test]

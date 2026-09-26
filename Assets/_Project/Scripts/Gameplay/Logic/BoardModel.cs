@@ -8,6 +8,8 @@ namespace RollicCase.Gameplay.Logic
     /// <summary>Grid occupancy of the blocks, with the movement and exit rules.</summary>
     public sealed class BoardModel
     {
+        private const float Epsilon = 1e-4f;
+
         private readonly BlockModel[] _occupancy;
         private readonly List<BlockModel> _blocks;
         private readonly List<DoorModel> _doors;
@@ -22,7 +24,7 @@ namespace RollicCase.Gameplay.Logic
 
             for (int i = 0; i < _blocks.Count; i++)
             {
-                Place(_blocks[i]);
+                Occupy(_blocks[i]);
             }
         }
 
@@ -37,34 +39,48 @@ namespace RollicCase.Gameplay.Logic
             return IsInside(cell) ? _occupancy[ToIndex(cell)] : null;
         }
 
-        /// <summary>Returns how many cells the block can move in the direction before it hits a wall or another block.</summary>
-        public int GetFreeDistance(BlockModel block, Vector2Int direction)
+        /// <summary>Returns how far the block, drawn at a continuous position in cells, can slide in the direction before it touches a wall or another block.</summary>
+        public float GetFreeTravel(BlockModel block, Vector2 position, Vector2Int direction)
         {
             if (!block.CanMove(direction))
             {
-                return 0;
+                return 0f;
             }
 
-            int distance = 0;
+            float travel = float.MaxValue;
 
-            while (CanShift(block, direction * (distance + 1)))
+            for (int i = 0; i < block.Cells.Count; i++)
             {
-                distance++;
+                travel = Mathf.Min(travel, GetCellTravel(block, position + block.Cells[i], direction));
             }
 
-            return distance;
+            return travel;
         }
 
-        /// <summary>Moves the block; the steps must not exceed the free distance.</summary>
-        public void Move(BlockModel block, Vector2Int direction, int steps)
+        /// <summary>Returns whether the block fits at the position without leaving the board or overlapping another block.</summary>
+        public bool CanPlace(BlockModel block, Vector2Int position)
         {
-            if (steps > GetFreeDistance(block, direction))
+            for (int i = 0; i < block.Cells.Count; i++)
             {
-                throw new InvalidOperationException($"Block {block.Id} cannot move {steps} cells toward {direction}.");
+                if (IsBlocked(block, position + block.Cells[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>Moves the block to the position; the position must be free.</summary>
+        public void Place(BlockModel block, Vector2Int position)
+        {
+            if (!CanPlace(block, position))
+            {
+                throw new InvalidOperationException($"Block {block.Id} cannot be placed at {position}.");
             }
 
             Fill(block, null);
-            block.Position += direction * steps;
+            block.Position = position;
             Fill(block, block);
         }
 
@@ -101,7 +117,7 @@ namespace RollicCase.Gameplay.Logic
             _blocks.Remove(block);
         }
 
-        private void Place(BlockModel block)
+        private void Occupy(BlockModel block)
         {
             for (int i = 0; i < block.Cells.Count; i++)
             {
@@ -121,26 +137,48 @@ namespace RollicCase.Gameplay.Logic
             }
         }
 
-        private bool CanShift(BlockModel block, Vector2Int offset)
+        private float GetCellTravel(BlockModel block, Vector2 cellCorner, Vector2Int direction)
         {
-            for (int i = 0; i < block.Cells.Count; i++)
+            bool isHorizontal = direction.x != 0;
+            int step = isHorizontal ? direction.x : direction.y;
+            float across = isHorizontal ? cellCorner.y : cellCorner.x;
+            float along = isHorizontal ? cellCorner.x : cellCorner.y;
+            int firstLane = Mathf.FloorToInt(across + Epsilon);
+            int lastLane = Mathf.CeilToInt(across + 1f - Epsilon) - 1;
+
+            float leadingEdge = step > 0 ? along + 1f : along;
+            int line = step > 0 ? Mathf.CeilToInt(leadingEdge - Epsilon) : Mathf.FloorToInt(leadingEdge + Epsilon) - 1;
+
+            while (!IsLineBlocked(block, line, firstLane, lastLane, isHorizontal))
             {
-                Vector2Int target = block.Position + block.Cells[i] + offset;
+                line += step;
+            }
 
-                if (!IsInside(target))
+            return step > 0 ? line - leadingEdge : leadingEdge - (line + 1);
+        }
+
+        private bool IsLineBlocked(BlockModel block, int line, int firstLane, int lastLane, bool isHorizontal)
+        {
+            for (int lane = firstLane; lane <= lastLane; lane++)
+            {
+                if (IsBlocked(block, isHorizontal ? new Vector2Int(line, lane) : new Vector2Int(lane, line)))
                 {
-                    return false;
-                }
-
-                BlockModel occupant = _occupancy[ToIndex(target)];
-
-                if (occupant != null && occupant != block)
-                {
-                    return false;
+                    return true;
                 }
             }
 
-            return true;
+            return false;
+        }
+
+        private bool IsBlocked(BlockModel block, Vector2Int cell)
+        {
+            if (!IsInside(cell))
+            {
+                return true;
+            }
+
+            BlockModel occupant = _occupancy[ToIndex(cell)];
+            return occupant != null && occupant != block;
         }
 
         private void Fill(BlockModel block, BlockModel value)

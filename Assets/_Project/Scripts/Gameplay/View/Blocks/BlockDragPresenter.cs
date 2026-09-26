@@ -36,6 +36,7 @@ namespace RollicCase.Gameplay.View.Blocks
             _dragPlane = new Plane(_root.Blocks.up, worldPoint);
             _grabCell = WorldToCell(worldPoint);
             _drag.Begin(block.Model);
+            block.SetGrabbed(true);
         }
 
         public void HandleDragged(BlockView block, Vector2 screenPosition)
@@ -72,6 +73,7 @@ namespace RollicCase.Gameplay.View.Blocks
             }
 
             _dragged = null;
+            block.SetGrabbed(false);
             block.SnapTo(_drag.End());
         }
 

@@ -13,7 +13,7 @@ namespace RollicCase.Gameplay.Logic
             ExitSide = exitSide;
         }
 
-        /// <summary>Continuous board position in cells; the fraction is kept on one axis only.</summary>
+        /// <summary>Continuous board position in cells.</summary>
         public Vector2 Position { get; }
         public bool HasExited { get; }
         public BoardSide ExitSide { get; }

@@ -50,7 +50,7 @@ namespace RollicCase.Tests.Gameplay.Logic
             BoardModel first = _factory.Create(_level);
             BoardModel second = _factory.Create(_level);
 
-            first.Move(first.Blocks[0], Vector2Int.right, 1);
+            first.Place(first.Blocks[0], new Vector2Int(2, 2));
 
             Assert.AreEqual(new Vector2Int(1, 2), second.Blocks[0].Position);
         }

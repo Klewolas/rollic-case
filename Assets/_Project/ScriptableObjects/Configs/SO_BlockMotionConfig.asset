@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_BlockMotionConfig
   m_EditorClassIdentifier: 
   _exitThreshold: 0.35
+  _grabHighlight: 0.35
   _snapDuration: 0.12
   _snapEase: 6
   _exitDuration: 0.25

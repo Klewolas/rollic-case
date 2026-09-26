@@ -24,22 +24,16 @@ namespace RollicCase.Gameplay.Logic
         public BoardModel Board { get; }
         public LevelTimer Timer { get; }
 
-        /// <summary>Moves the block while playing and returns the steps actually taken.</summary>
-        public int Move(BlockModel block, Vector2Int direction, int steps)
+        /// <summary>Moves the block to the position while playing; returns false when the level is over or the position is taken.</summary>
+        public bool TryPlace(BlockModel block, Vector2Int position)
         {
-            if (State != LevelState.Playing)
+            if (State != LevelState.Playing || !Board.CanPlace(block, position))
             {
-                return 0;
+                return false;
             }
 
-            int allowedSteps = Mathf.Min(steps, Board.GetFreeDistance(block, direction));
-
-            if (allowedSteps > 0)
-            {
-                Board.Move(block, direction, allowedSteps);
-            }
-
-            return allowedSteps;
+            Board.Place(block, position);
+            return true;
         }
 
         /// <summary>Removes the block through a matching door on the side while playing.</summary>

@@ -139,22 +139,22 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
-        public void Move_StepsBeyondFreeDistance_ClampsToFreeDistance()
+        public void TryPlace_FreeCells_MovesTheBlock()
         {
-            int moved = _session.Move(_blue, Vector2Int.right, 10);
+            bool placed = _session.TryPlace(_blue, new Vector2Int(3, 1));
 
-            Assert.AreEqual(4, moved);
-            Assert.AreEqual(new Vector2Int(4, 0), _blue.Position);
+            Assert.IsTrue(placed);
+            Assert.AreEqual(new Vector2Int(3, 1), _blue.Position);
         }
 
         [Test]
-        public void Move_AfterFail_DoesNothing()
+        public void TryPlace_AfterFail_DoesNothing()
         {
             _session.Tick(Duration);
 
-            int moved = _session.Move(_blue, Vector2Int.right, 1);
+            bool placed = _session.TryPlace(_blue, new Vector2Int(1, 0));
 
-            Assert.AreEqual(0, moved);
+            Assert.IsFalse(placed);
             Assert.AreEqual(new Vector2Int(0, 0), _blue.Position);
         }
 

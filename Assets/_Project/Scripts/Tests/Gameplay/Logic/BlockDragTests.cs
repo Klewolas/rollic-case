@@ -33,49 +33,61 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
-        public void Update_FreeRow_MovesWholeCellsAndKeepsTheFraction()
+        public void Update_FreeBoard_FollowsTheFingerOnBothAxes()
         {
             BlockModel block = Block(_red, 0, 0);
             BlockDrag drag = Drag(out _, block);
 
-            BlockDragResult result = drag.Update(new Vector2(2.4f, 0f));
+            BlockDragResult result = drag.Update(new Vector2(1.3f, 0.6f));
 
-            Assert.AreEqual(new Vector2Int(2, 0), block.Position);
-            AssertPosition(new Vector2(2.4f, 0f), result.Position);
+            AssertPosition(new Vector2(1.3f, 0.6f), result.Position);
         }
 
         [Test]
-        public void Update_TowardAnotherBlock_StopsBesideIt()
+        public void Update_FreeBoard_KeepsTheModelOnTheNearestCell()
+        {
+            BlockModel block = Block(_red, 0, 0);
+            BlockDrag drag = Drag(out _, block);
+
+            drag.Update(new Vector2(1.3f, 0.6f));
+
+            Assert.AreEqual(new Vector2Int(1, 1), block.Position);
+        }
+
+        [Test]
+        public void Update_TowardAnotherBlock_StopsFlushAgainstIt()
         {
             BlockModel block = Block(_red, 0, 0);
             BlockDrag drag = Drag(out _, block, Block(_blue, 2, 0));
 
             BlockDragResult result = drag.Update(new Vector2(3f, 0f));
 
-            Assert.AreEqual(new Vector2Int(1, 0), block.Position);
             AssertPosition(new Vector2(1f, 0f), result.Position);
+            Assert.AreEqual(new Vector2Int(1, 0), block.Position);
         }
 
         [Test]
-        public void Update_BlockedOnTheMainAxis_GoesAroundThroughTheFreeAxis()
+        public void Update_BetweenRowsNextToABlock_IsStoppedByIt()
+        {
+            BlockModel block = Block(_red, 0, 0);
+            BlockDrag drag = Drag(out _, block, Block(_blue, 1, 1));
+            drag.Update(new Vector2(0f, 0.5f));
+
+            BlockDragResult result = drag.Update(new Vector2(1f, 0.5f));
+
+            AssertPosition(new Vector2(0f, 0.5f), result.Position);
+        }
+
+        [Test]
+        public void Update_DiagonallyPastABlock_SlidesAlongItsEdge()
         {
             BlockModel block = Block(_red, 0, 0);
             BlockDrag drag = Drag(out _, block, Block(_blue, 1, 0));
 
-            drag.Update(new Vector2(2f, 1f));
+            BlockDragResult result = drag.Update(new Vector2(2f, 1f));
 
+            AssertPosition(new Vector2(2f, 1f), result.Position);
             Assert.AreEqual(new Vector2Int(2, 1), block.Position);
-        }
-
-        [Test]
-        public void Update_DiagonalOffset_KeepsTheFractionOnTheDominantAxisOnly()
-        {
-            BlockModel block = Block(_red, 0, 0);
-            BlockDrag drag = Drag(out _, block);
-
-            BlockDragResult result = drag.Update(new Vector2(0.3f, 0.6f));
-
-            AssertPosition(new Vector2(0f, 0.6f), result.Position);
         }
 
         [Test]
@@ -84,10 +96,21 @@ namespace RollicCase.Tests.Gameplay.Logic
             BlockModel block = Block(_red, 0, 0);
             BlockDrag drag = Drag(out _, block);
 
-            drag.Update(new Vector2(2f, 0f));
+            drag.Update(new Vector2(2f, 1f));
             drag.Update(Vector2.zero);
 
             Assert.AreEqual(new Vector2Int(0, 0), block.Position);
+        }
+
+        [Test]
+        public void Update_MoveRuleForbidsDirection_DoesNotMoveThatWay()
+        {
+            var block = new BlockModel(0, _red, Vector2Int.zero, Shapes.Single, new BlockFeature[] { new FakeMoveRule(Vector2Int.right) });
+            BlockDrag drag = Drag(out _, block);
+
+            BlockDragResult result = drag.Update(new Vector2(1.5f, 0f));
+
+            AssertPosition(Vector2.zero, result.Position);
         }
 
         [Test]
@@ -137,6 +160,18 @@ namespace RollicCase.Tests.Gameplay.Logic
 
             Assert.IsTrue(result.HasExited);
             Assert.AreEqual(0, session.Board.Blocks.Count);
+        }
+
+        [Test]
+        public void Update_SlightlyOffCenterIntoTheDoor_ExitsTheBlock()
+        {
+            BlockModel block = Block(_red, 2, 4);
+            BlockDrag drag = Drag(out LevelSession session, block, door: new DoorModel(BoardSide.Top, 2, 1, _red));
+
+            BlockDragResult result = drag.Update(new Vector2(0.3f, 0.8f));
+
+            Assert.IsTrue(result.HasExited);
+            AssertPosition(new Vector2(2f, 4f), result.Position);
         }
 
         [Test]

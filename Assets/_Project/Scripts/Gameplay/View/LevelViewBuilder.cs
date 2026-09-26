@@ -7,7 +7,7 @@ using Zenject;
 
 namespace RollicCase.Gameplay.View
 {
-    /// <summary>Fills the scene's board with the level: ground and rim meshes, then a door and block view for each door and block.</summary>
+    /// <summary>Fills the scene's board with the level: ground, ground base, and rim, then a door and block view for each door and block.</summary>
     public sealed class LevelViewBuilder : IInitializable, IDisposable
     {
         private readonly BoardModel _board;
@@ -40,6 +40,7 @@ namespace RollicCase.Gameplay.View
             _rimMesh = _boardMeshes.BuildRim(_board);
             _root.Ground.sharedMesh = _groundMesh;
             _root.Rim.sharedMesh = _rimMesh;
+            FitGroundBase();
 
             foreach (DoorModel door in _board.Doors)
             {
@@ -52,7 +53,7 @@ namespace RollicCase.Gameplay.View
             {
                 BlockView view = _blockFactory.Create();
                 view.transform.SetParent(_root.Blocks, false);
-                view.Initialize(block, _blockMeshes.Build(block.Cells), BlockTint(block));
+                view.Initialize(block, _blockMeshes.Build(block.Cells));
             }
         }
 
@@ -62,11 +63,17 @@ namespace RollicCase.Gameplay.View
             UnityEngine.Object.Destroy(_rimMesh);
         }
 
-        private MaterialPropertyBlock BlockTint(BlockModel block)
+        private void FitGroundBase()
         {
+            Vector3 boardSize = new Vector3(_board.Width, 0f, _board.Height) * BoardSpace.CellSize;
+            Vector3 tileSize = _config.GroundTile.bounds.size;
+            Transform groundBase = _root.GroundBase.transform;
+            groundBase.localPosition = boardSize * 0.5f + Vector3.down * BoardSpace.GroundBaseDepth;
+            groundBase.localScale = new Vector3(boardSize.x / tileSize.x, 1f, boardSize.z / tileSize.z);
+
             _tint.Clear();
-            _tint.SetColor(ShaderProperties.BaseColor, block.Color.DisplayColor);
-            return _tint;
+            _tint.SetColor(ShaderProperties.BaseColor, _config.GroundBaseColor);
+            _root.GroundBase.SetPropertyBlock(_tint);
         }
 
         private MaterialPropertyBlock DoorTint(DoorModel door)

@@ -1,19 +1,17 @@
-using System;
 using RollicCase.Gameplay.Data;
 using UnityEngine;
 
 namespace RollicCase.Gameplay.Logic
 {
-    /// <summary>Turns a continuous drag into cell moves on the session and detects exits through matching doors.</summary>
+    /// <summary>Keeps a dragged block under the finger on both axes, stops it flush against walls and other blocks, and detects exits through matching doors.</summary>
     public sealed class BlockDrag
     {
-        private const float MaxFraction = 0.5f;
-
         private readonly LevelSession _session;
         private readonly float _exitThreshold;
 
         private BlockModel _block;
-        private Vector2Int _start;
+        private Vector2 _start;
+        private Vector2 _position;
 
         /// <param name="exitThreshold">How many cells a flush block must be pushed past its wall to leave through a door.</param>
         public BlockDrag(LevelSession session, float exitThreshold)
@@ -27,98 +25,68 @@ namespace RollicCase.Gameplay.Logic
         {
             _block = block;
             _start = block.Position;
+            _position = _start;
         }
 
-        /// <summary>Moves the block toward the start cell plus the offset in cells and returns where to draw it.</summary>
+        /// <summary>Slides the block toward the start cell plus the offset in cells and returns where to draw it.</summary>
         public BlockDragResult Update(Vector2 offset)
         {
             if (_session.State != LevelState.Playing)
             {
-                return BlockDragResult.At(_block.Position);
+                return BlockDragResult.At(_position);
             }
 
+            // The second horizontal pass lets the block slide around a corner it only cleared after moving vertically.
             Vector2 target = _start + offset;
-            MoveToward(Vector2Int.RoundToInt(target));
+            Slide(Vector2Int.right, target.x - _position.x);
+            Slide(Vector2Int.up, target.y - _position.y);
+            Slide(Vector2Int.right, target.x - _position.x);
 
-            Vector2Int position = _block.Position;
-            Vector2 residual = target - position;
-            bool isHorizontal = Mathf.Abs(residual.x) >= Mathf.Abs(residual.y);
-            float push = isHorizontal ? residual.x : residual.y;
+            Vector2Int cell = Vector2Int.RoundToInt(_position);
+            _session.TryPlace(_block, cell);
 
-            if (Mathf.Abs(push) >= _exitThreshold)
+            Vector2 push = target - _position;
+            bool isHorizontal = Mathf.Abs(push.x) >= Mathf.Abs(push.y);
+            float amount = isHorizontal ? push.x : push.y;
+            BoardSide side = GetPushSide(isHorizontal, amount);
+
+            if (Mathf.Abs(amount) >= _exitThreshold && _session.TryExit(_block, side))
             {
-                BoardSide side = GetPushSide(isHorizontal, push);
-
-                if (_session.TryExit(_block, side))
-                {
-                    _block = null;
-                    return BlockDragResult.Exited(position, side);
-                }
+                _block = null;
+                return BlockDragResult.Exited(cell, side);
             }
 
-            float fractionX = GetFreeFraction(Vector2Int.right, residual.x);
-            float fractionY = GetFreeFraction(Vector2Int.up, residual.y);
-
-            return Mathf.Abs(fractionX) >= Mathf.Abs(fractionY)
-                ? BlockDragResult.At(new Vector2(position.x + fractionX, position.y))
-                : BlockDragResult.At(new Vector2(position.x, position.y + fractionY));
+            return BlockDragResult.At(_position);
         }
 
-        /// <summary>Ends the drag and returns the cell the block rests on.</summary>
+        /// <summary>Ends the drag and returns the cell the block settles into.</summary>
         public Vector2Int End()
         {
-            Vector2Int position = _block.Position;
+            Vector2Int cell = _block.Position;
             _block = null;
-            return position;
+            return cell;
         }
 
-        private void MoveToward(Vector2Int target)
+        private void Slide(Vector2Int axis, float distance)
         {
-            Vector2Int remaining = target - _block.Position;
-
-            while (remaining != Vector2Int.zero)
+            if (Mathf.Approximately(distance, 0f))
             {
-                var stepX = new Vector2Int(Math.Sign(remaining.x), 0);
-                var stepY = new Vector2Int(0, Math.Sign(remaining.y));
-                bool prefersX = Math.Abs(remaining.x) >= Math.Abs(remaining.y);
-                Vector2Int primary = prefersX ? stepX : stepY;
-                Vector2Int secondary = prefersX ? stepY : stepX;
-
-                if (!TryStep(primary) && !TryStep(secondary))
-                {
-                    return;
-                }
-
-                remaining = target - _block.Position;
-            }
-        }
-
-        private bool TryStep(Vector2Int direction)
-        {
-            return direction != Vector2Int.zero && _session.Move(_block, direction, 1) == 1;
-        }
-
-        private float GetFreeFraction(Vector2Int axis, float residual)
-        {
-            float fraction = Mathf.Clamp(residual, -MaxFraction, MaxFraction);
-
-            if (fraction == 0f)
-            {
-                return 0f;
+                return;
             }
 
-            Vector2Int direction = fraction > 0f ? axis : -axis;
-            return _session.Board.GetFreeDistance(_block, direction) > 0 ? fraction : 0f;
+            Vector2Int direction = distance > 0f ? axis : -axis;
+            float travel = Mathf.Min(Mathf.Abs(distance), _session.Board.GetFreeTravel(_block, _position, direction));
+            _position += (Vector2)direction * travel;
         }
 
-        private static BoardSide GetPushSide(bool isHorizontal, float push)
+        private static BoardSide GetPushSide(bool isHorizontal, float amount)
         {
             if (isHorizontal)
             {
-                return push > 0f ? BoardSide.Right : BoardSide.Left;
+                return amount > 0f ? BoardSide.Right : BoardSide.Left;
             }
 
-            return push > 0f ? BoardSide.Top : BoardSide.Bottom;
+            return amount > 0f ? BoardSide.Top : BoardSide.Bottom;
         }
     }
 }

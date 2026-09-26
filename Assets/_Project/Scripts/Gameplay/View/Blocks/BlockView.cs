@@ -16,6 +16,8 @@ namespace RollicCase.Gameplay.View.Blocks
 
         private IBlockDragHandler _dragHandler;
         private BlockMotionConfig _motion;
+        private MaterialPropertyBlock _tint;
+        private Color _color;
         private Tween _motionTween;
         private TweenCallback _onExited;
 
@@ -30,6 +32,7 @@ namespace RollicCase.Gameplay.View.Blocks
 
         private void Awake()
         {
+            _tint = new MaterialPropertyBlock();
             _onExited = HandleExited;
         }
 
@@ -39,14 +42,21 @@ namespace RollicCase.Gameplay.View.Blocks
         }
 
         /// <summary>Shows the block with its own combined mesh, tinted in its color, at its board position.</summary>
-        public void Initialize(BlockModel model, Mesh mesh, MaterialPropertyBlock tint)
+        public void Initialize(BlockModel model, Mesh mesh)
         {
             Model = model;
             name = model.Color.name;
+            _color = model.Color.DisplayColor;
             _meshFilter.sharedMesh = mesh;
             _meshCollider.sharedMesh = mesh;
-            _meshRenderer.SetPropertyBlock(tint);
+            ShowColor(_color);
             transform.localPosition = BoardSpace.CellToWorld(model.Position);
+        }
+
+        /// <summary>Brightens the block while the player holds it.</summary>
+        public void SetGrabbed(bool isGrabbed)
+        {
+            ShowColor(isGrabbed ? Color.Lerp(_color, Color.white, _motion.GrabHighlight) : _color);
         }
 
         /// <summary>Places the block at a continuous board position in cells.</summary>
@@ -96,6 +106,12 @@ namespace RollicCase.Gameplay.View.Blocks
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
             _dragHandler.HandleReleased(this);
+        }
+
+        private void ShowColor(Color color)
+        {
+            _tint.SetColor(ShaderProperties.BaseColor, color);
+            _meshRenderer.SetPropertyBlock(_tint);
         }
 
         private void HandleExited()

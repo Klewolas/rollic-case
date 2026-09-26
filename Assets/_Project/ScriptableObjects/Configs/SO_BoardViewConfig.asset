@@ -27,6 +27,7 @@ MonoBehaviour:
   _door: {fileID: -621459505486514712, guid: fcafb92af153b264886071706233112b, type: 3}
   _doorArrow: {fileID: 2650694734197125860, guid: fcafb92af153b264886071706233112b,
     type: 3}
+  _groundBaseColor: {r: 0.2, g: 0.24, b: 0.4, a: 1}
   _doorGlow: 0.35
   _cameraTilt: 12
   _cameraPadding: 1.15

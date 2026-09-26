@@ -21,6 +21,10 @@ namespace RollicCase.Gameplay.View
         [SerializeField] private Mesh _door;
         [SerializeField] private Mesh _doorArrow;
 
+        [Header("Ground")]
+        [Tooltip("Color of the base under the ground tiles, seen through the gaps between them.")]
+        [SerializeField] private Color _groundBaseColor;
+
         [Header("Doors")]
         [Tooltip("How strongly a door glows in its color.")]
         [SerializeField, Range(0f, 1f)] private float _doorGlow;
@@ -36,6 +40,7 @@ namespace RollicCase.Gameplay.View
         public Mesh Corner => _corner;
         public Mesh Door => _door;
         public Mesh DoorArrow => _doorArrow;
+        public Color GroundBaseColor => _groundBaseColor;
         public float DoorGlow => _doorGlow;
         public float CameraTilt => _cameraTilt;
         public float CameraPadding => _cameraPadding;

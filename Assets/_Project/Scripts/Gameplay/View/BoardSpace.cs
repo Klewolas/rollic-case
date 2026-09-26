@@ -11,6 +11,9 @@ namespace RollicCase.Gameplay.View
         /// <summary>Width of the rim around the board in world units.</summary>
         public const float RimWidth = 1f;
 
+        /// <summary>How far the ground base sits below the tiles so the two never overlap.</summary>
+        public const float GroundBaseDepth = 0.01f;
+
         /// <summary>Block pieces are modeled lying on XY with their top facing -Z.</summary>
         public static readonly Quaternion BlockPieceUpright = Quaternion.Euler(90f, 0f, 0f);
 
