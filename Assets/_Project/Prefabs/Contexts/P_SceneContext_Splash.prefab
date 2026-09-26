@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &35130024146615292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4478852222485267731}
+  - component: {fileID: 3231977635462508213}
+  m_Layer: 0
+  m_Name: SplashInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4478852222485267731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35130024146615292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6340720043841518258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3231977635462508213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35130024146615292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9636caf33cec648458909b043f92a2c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _splashConfig: {fileID: 11400000, guid: 6e212d36fa16bda409ccfab3cc829ea2, type: 2}
+--- !u!1001 &6722638818731464260
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678273462713519672, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: _monoInstallers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678273462713519672, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: _monoInstallers.Array.data[0]
+      value: 
+      objectReference: {fileID: 3231977635462508213}
+    - target: {fileID: 2177199042740363698, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      propertyPath: m_Name
+      value: P_SceneContext_Splash
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4478852222485267731}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e047cc51e3169074b8f7204494b21158, type: 3}
+--- !u!4 &6340720043841518258 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 771627546212232438, guid: e047cc51e3169074b8f7204494b21158,
+    type: 3}
+  m_PrefabInstance: {fileID: 6722638818731464260}
+  m_PrefabAsset: {fileID: 0}

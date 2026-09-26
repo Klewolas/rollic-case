@@ -53,6 +53,18 @@ namespace RollicCase.Tests.Fakes
             return level;
         }
 
+        public LevelCatalog CreateLevelCatalog(params LevelData[] levels)
+        {
+            var catalog = Create<LevelCatalog>();
+
+            foreach (LevelData level in levels)
+            {
+                catalog.Add(level);
+            }
+
+            return catalog;
+        }
+
         public void DestroyAll()
         {
             foreach (ScriptableObject asset in _created)

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da95e8f80c7c7e34497f0abbf3305cb1, type: 3}
+  m_Name: SO_BoardViewConfig
+  m_EditorClassIdentifier: 
+  _centerPiece: {fileID: -3289860805121049569, guid: 6b7efc23a77082a478593f1d596600a0,
+    type: 3}
+  _edgePiece: {fileID: 4163668623295024386, guid: 6b7efc23a77082a478593f1d596600a0,
+    type: 3}
+  _outerCornerPiece: {fileID: -3023630919892535758, guid: 6b7efc23a77082a478593f1d596600a0,
+    type: 3}
+  _innerCornerPiece: {fileID: 3222031244701842341, guid: 6b7efc23a77082a478593f1d596600a0,
+    type: 3}
+  _groundTile: {fileID: 9127120572191758296, guid: 01f3b5de92932d6438444a1fde89fcc0,
+    type: 3}
+  _wall: {fileID: 8733429697405204941, guid: fcafb92af153b264886071706233112b, type: 3}
+  _corner: {fileID: 5732635521261682974, guid: fcafb92af153b264886071706233112b, type: 3}
+  _door: {fileID: -621459505486514712, guid: fcafb92af153b264886071706233112b, type: 3}
+  _doorGlow: 0.35
+  _cameraTilt: 12
+  _cameraPadding: 1.15

@@ -13,11 +13,11 @@ namespace RollicCase.UI.Popups
         private readonly Transform _layer;
         private readonly Dictionary<Type, IPopup> _instances = new Dictionary<Type, IPopup>();
 
-        public PopupFactory(DiContainer container, PopupCatalog catalog, Transform layer)
+        public PopupFactory(DiContainer container, PopupCatalog catalog, PopupLayer layer)
         {
             _container = container;
             _catalog = catalog;
-            _layer = layer;
+            _layer = layer.Content;
         }
 
         public TPopup Get<TPopup>() where TPopup : class, IPopup

@@ -13,13 +13,12 @@ namespace RollicCase.Editor.LevelEditor.Board
         private const string DoorLabelPrefix = "D";
 
         private readonly LevelEditorContext _context;
-        private readonly GUIStyle _labelStyle;
+        private GUIStyle _labelStyle;
         private int _undoGroup;
 
         public BoardView(LevelEditorContext context)
         {
             _context = context;
-            _labelStyle = new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
             onGUIHandler = Draw;
             focusable = true;
             style.flexGrow = 1f;
@@ -31,6 +30,8 @@ namespace RollicCase.Editor.LevelEditor.Board
 
         private void Draw()
         {
+            // EditorStyles is only safe to read inside an OnGUI call, so the style is created on the first draw.
+            _labelStyle ??= new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
             var area = new Rect(Vector2.zero, contentRect.size);
             LevelData level = _context.Level;
 

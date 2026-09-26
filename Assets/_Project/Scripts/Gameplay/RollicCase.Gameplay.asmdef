@@ -1,7 +1,10 @@
 {
     "name": "RollicCase.Gameplay",
     "rootNamespace": "RollicCase.Gameplay",
-    "references": [],
+    "references": [
+        "RollicCase.Systems.PlayerData",
+        "Zenject"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

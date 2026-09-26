@@ -8,7 +8,7 @@ namespace RollicCase.Gameplay.Data
     {
         [SerializeField] private Color _displayColor = Color.white;
 
-        /// <summary>Flat color used wherever the color is shown without a material, such as the level editor.</summary>
+        /// <summary>The color blocks and doors are tinted with, in the game and in the level editor.</summary>
         public Color DisplayColor => _displayColor;
     }
 }
