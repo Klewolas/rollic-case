@@ -13,6 +13,7 @@ namespace RollicCase.Gameplay
     public sealed class GameplayInstaller : MonoInstaller
     {
         [SerializeField] private BoardViewConfig _config;
+        [SerializeField] private BlockMotionConfig _motionConfig;
         [SerializeField] private BlockView _blockPrefab;
         [SerializeField] private DoorView _doorPrefab;
 
@@ -25,11 +26,15 @@ namespace RollicCase.Gameplay
         public override void InstallBindings()
         {
             Container.BindInstance(_config);
+            Container.BindInstance(_motionConfig);
             Container.BindInstance(_camera);
             Container.BindInstance(_board);
 
             Container.Bind<BoardFactory>().AsSingle();
             Container.Bind<BoardModel>().FromMethod(CreateBoard).AsSingle();
+            Container.Bind<LevelSession>().FromMethod(CreateSession).AsSingle();
+            Container.BindInterfacesTo<LevelSessionTicker>().AsSingle();
+            Container.Bind<BlockDrag>().AsSingle().WithArguments(_motionConfig.ExitThreshold);
 
             Container.Bind<BoardMeshBuilder>().AsSingle();
             Container.Bind<BlockMeshBuilder>().AsSingle();
@@ -37,11 +42,18 @@ namespace RollicCase.Gameplay
             Container.BindFactory<DoorView, DoorView.Factory>().FromComponentInNewPrefab(_doorPrefab);
             Container.BindInterfacesTo<LevelViewBuilder>().AsSingle();
             Container.BindInterfacesTo<CameraFramer>().AsSingle();
+            Container.BindInterfacesTo<BlockDragPresenter>().AsSingle();
         }
 
         private static BoardModel CreateBoard(InjectContext context)
         {
             return context.Container.Resolve<BoardFactory>().Create(context.Container.Resolve<LevelData>());
+        }
+
+        private static LevelSession CreateSession(InjectContext context)
+        {
+            var timer = new LevelTimer(context.Container.Resolve<LevelData>().TimerSeconds);
+            return new LevelSession(context.Container.Resolve<BoardModel>(), timer);
         }
     }
 }

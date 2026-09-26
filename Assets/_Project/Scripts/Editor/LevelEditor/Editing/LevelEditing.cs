@@ -72,7 +72,7 @@ namespace RollicCase.Editor.LevelEditor.Editing
                 return false;
             }
 
-            level.SetBlock(index, new BlockData(block.Color, origin, block.Cells));
+            level.SetBlock(index, block.WithOrigin(origin));
             return true;
         }
 
@@ -87,7 +87,7 @@ namespace RollicCase.Editor.LevelEditor.Editing
                 return false;
             }
 
-            level.SetBlock(index, new BlockData(block.Color, block.Origin, rotated));
+            level.SetBlock(index, block.WithCells(rotated));
             return true;
         }
 

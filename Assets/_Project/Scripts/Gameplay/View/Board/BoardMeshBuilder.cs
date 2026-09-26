@@ -33,7 +33,7 @@ namespace RollicCase.Gameplay.View.Board
             {
                 for (int y = 0; y < height; y++)
                 {
-                    parts.Add(Part(_config.GroundTile, BoardSpace.CellCenterToWorld(new Vector2Int(x, y)), 0f, Quaternion.identity));
+                    parts.Add(Part(_config.GroundTile, BoardSpace.CellCenterToWorld(new Vector2Int(x, y)), Quaternion.identity));
                 }
             }
 
@@ -69,6 +69,25 @@ namespace RollicCase.Gameplay.View.Board
             }
 
             return Combine(parts, "Door");
+        }
+
+        /// <summary>Returns one mesh with an arrow on top of every door cell, pointing out of the board.</summary>
+        public Mesh BuildDoorArrows(BoardModel board, DoorModel door)
+        {
+            var parts = new List<CombineInstance>(door.Length);
+            Vector2Int outward = door.Side.ToDirection();
+            Quaternion rotation = Quaternion.LookRotation(-new Vector3(outward.x, 0f, outward.y)) * BoardSpace.RimPieceUpright;
+            Bounds arrow = _config.DoorArrow.bounds;
+            float doorTop = -_config.Door.bounds.min.y;
+            Vector3 arrowBase = rotation * new Vector3(arrow.center.x, arrow.max.y, arrow.center.z);
+
+            for (int i = door.Start; i <= door.End; i++)
+            {
+                Vector3 position = GetRimCellCenter(board, door.Side, i) + Vector3.up * doorTop - arrowBase;
+                parts.Add(Part(_config.DoorArrow, position, rotation));
+            }
+
+            return Combine(parts, "DoorArrows");
         }
 
         private void AddSideWalls(List<CombineInstance> parts, BoardModel board, BoardSide side, int length)
@@ -123,15 +142,15 @@ namespace RollicCase.Gameplay.View.Board
 
         private static CombineInstance RimPart(Mesh mesh, Vector3 position, float yaw)
         {
-            return Part(mesh, position, yaw, BoardSpace.RimPieceUpright);
+            return Part(mesh, position, Quaternion.Euler(0f, yaw, 0f) * BoardSpace.RimPieceUpright);
         }
 
-        private static CombineInstance Part(Mesh mesh, Vector3 position, float yaw, Quaternion upright)
+        private static CombineInstance Part(Mesh mesh, Vector3 position, Quaternion rotation)
         {
             return new CombineInstance
             {
                 mesh = mesh,
-                transform = Matrix4x4.TRS(position, Quaternion.Euler(0f, yaw, 0f) * upright, Vector3.one)
+                transform = Matrix4x4.TRS(position, rotation, Vector3.one)
             };
         }
 

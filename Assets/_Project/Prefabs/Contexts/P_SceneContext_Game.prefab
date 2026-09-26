@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 57ea2a661e23d174eae2fd151fc00926, type: 2}
+  _motionConfig: {fileID: 11400000, guid: 013b810d2cd388b4cbe0056eb58be288, type: 2}
   _blockPrefab: {fileID: 8381402362831247819, guid: 142e7c67a7bbaeb489b6ef1e1ac9b52a,
     type: 3}
   _doorPrefab: {fileID: 1501362882560586546, guid: f44138d1aeaf81542988040811fff909,

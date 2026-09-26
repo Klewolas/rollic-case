@@ -25,6 +25,8 @@ MonoBehaviour:
   _wall: {fileID: 8733429697405204941, guid: fcafb92af153b264886071706233112b, type: 3}
   _corner: {fileID: 5732635521261682974, guid: fcafb92af153b264886071706233112b, type: 3}
   _door: {fileID: -621459505486514712, guid: fcafb92af153b264886071706233112b, type: 3}
+  _doorArrow: {fileID: 2650694734197125860, guid: fcafb92af153b264886071706233112b,
+    type: 3}
   _doorGlow: 0.35
   _cameraTilt: 12
   _cameraPadding: 1.15

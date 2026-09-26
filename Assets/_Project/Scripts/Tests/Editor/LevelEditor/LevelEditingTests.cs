@@ -97,6 +97,28 @@ namespace RollicCase.Tests.Editor.LevelEditor
         }
 
         [Test]
+        public void TryMoveBlock_BlockWithFeature_KeepsFeature()
+        {
+            var feature = new FakeFeatureData();
+            _level.AddBlock(new BlockData(_red, new Vector2Int(0, 0), Shapes.Single, new[] { feature }));
+
+            _editing.TryMoveBlock(_level, 0, new Vector2Int(1, 0));
+
+            CollectionAssert.AreEqual(new[] { feature }, _level.Blocks[0].Features);
+        }
+
+        [Test]
+        public void TryRotateBlock_BlockWithFeature_KeepsFeature()
+        {
+            var feature = new FakeFeatureData();
+            _level.AddBlock(new BlockData(_red, new Vector2Int(0, 0), Shapes.Horizontal2, new[] { feature }));
+
+            _editing.TryRotateBlock(_level, 0);
+
+            CollectionAssert.AreEqual(new[] { feature }, _level.Blocks[0].Features);
+        }
+
+        [Test]
         public void TryRotateBlock_WouldLeaveBoard_KeepsShape()
         {
             _editing.TryAddBlock(_level, _red, new Vector2Int(0, 4), Shapes.Horizontal2);

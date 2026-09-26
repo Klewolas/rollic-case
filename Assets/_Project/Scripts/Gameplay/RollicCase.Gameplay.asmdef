@@ -3,7 +3,8 @@
     "rootNamespace": "RollicCase.Gameplay",
     "references": [
         "RollicCase.Systems.PlayerData",
-        "Zenject"
+        "Zenject",
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

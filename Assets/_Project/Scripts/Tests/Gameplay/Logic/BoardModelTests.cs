@@ -98,6 +98,24 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
+        public void GetFreeDistance_MoveRuleForbidsDirection_ReturnsZero()
+        {
+            BlockModel block = Block(_red, 1, 1, Shapes.Single, new FakeMoveRule(Vector2Int.right));
+            BoardModel board = Board(new[] { block });
+
+            Assert.AreEqual(0, board.GetFreeDistance(block, Vector2Int.right));
+        }
+
+        [Test]
+        public void GetFreeDistance_MoveRuleForbidsOtherDirection_ReturnsFreeCells()
+        {
+            BlockModel block = Block(_red, 1, 1, Shapes.Single, new FakeMoveRule(Vector2Int.right));
+            BoardModel board = Board(new[] { block });
+
+            Assert.AreEqual(1, board.GetFreeDistance(block, Vector2Int.left));
+        }
+
+        [Test]
         public void Move_WithinFreeDistance_UpdatesPositionAndCells()
         {
             BlockModel block = Block(_red, 0, 0, Shapes.Single);
@@ -137,6 +155,15 @@ namespace RollicCase.Tests.Gameplay.Logic
             BoardModel board = Board(new[] { block }, door);
 
             Assert.AreSame(door, board.FindExitDoor(block, BoardSide.Left));
+        }
+
+        [Test]
+        public void FindExitDoor_MoveRuleForbidsSide_ReturnsNull()
+        {
+            BlockModel block = Block(_red, 1, 4, Shapes.Horizontal2, new FakeMoveRule(Vector2Int.up));
+            BoardModel board = Board(new[] { block }, new DoorModel(BoardSide.Top, 1, 2, _red));
+
+            Assert.IsNull(board.FindExitDoor(block, BoardSide.Top));
         }
 
         [Test]
@@ -187,9 +214,9 @@ namespace RollicCase.Tests.Gameplay.Logic
             Assert.AreEqual(0, board.Blocks.Count);
         }
 
-        private static BlockModel Block(BlockColor color, int x, int y, Vector2Int[] cells)
+        private static BlockModel Block(BlockColor color, int x, int y, Vector2Int[] cells, params BlockFeature[] features)
         {
-            return new BlockModel(0, color, new Vector2Int(x, y), cells);
+            return new BlockModel(0, color, new Vector2Int(x, y), cells, features);
         }
 
         private static BoardModel Board(IReadOnlyList<BlockModel> blocks, params DoorModel[] doors)

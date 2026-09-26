@@ -63,6 +63,28 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
+        public void TryExit_OtherBlockListensForExits_NotifiesIt()
+        {
+            var listener = new FakeExitListener();
+            LevelSession session = SessionWithListener(listener, out BlockModel exiting);
+
+            session.TryExit(exiting, BoardSide.Top);
+
+            CollectionAssert.AreEqual(new[] { exiting }, listener.ExitedBlocks);
+        }
+
+        [Test]
+        public void TryExit_Rejected_DoesNotNotify()
+        {
+            var listener = new FakeExitListener();
+            LevelSession session = SessionWithListener(listener, out BlockModel exiting);
+
+            session.TryExit(exiting, BoardSide.Bottom);
+
+            CollectionAssert.IsEmpty(listener.ExitedBlocks);
+        }
+
+        [Test]
         public void TryExit_LastBlock_WinsAndRaisesStateChanged()
         {
             LevelState? raised = null;
@@ -120,6 +142,15 @@ namespace RollicCase.Tests.Gameplay.Logic
             _session.Tick(Duration);
 
             Assert.IsFalse(_session.TryExit(_red, BoardSide.Top));
+        }
+
+        private LevelSession SessionWithListener(FakeExitListener listener, out BlockModel exiting)
+        {
+            BlockColor color = _assets.CreateBlockColor();
+            exiting = new BlockModel(0, color, new Vector2Int(2, 4), Shapes.Single);
+            var listening = new BlockModel(1, color, new Vector2Int(0, 0), Shapes.Single, new BlockFeature[] { listener });
+            var board = new BoardModel(5, 5, new[] { exiting, listening }, new[] { new DoorModel(BoardSide.Top, 2, 1, color) });
+            return new LevelSession(board, new LevelTimer(Duration));
         }
     }
 }

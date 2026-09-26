@@ -40,6 +40,11 @@ namespace RollicCase.Gameplay.Logic
         /// <summary>Returns how many cells the block can move in the direction before it hits a wall or another block.</summary>
         public int GetFreeDistance(BlockModel block, Vector2Int direction)
         {
+            if (!block.CanMove(direction))
+            {
+                return 0;
+            }
+
             int distance = 0;
 
             while (CanShift(block, direction * (distance + 1)))
@@ -68,7 +73,7 @@ namespace RollicCase.Gameplay.Logic
         {
             RectInt bounds = block.Bounds;
 
-            if (!IsFlush(bounds, side))
+            if (!IsFlush(bounds, side) || !block.CanMove(side.ToDirection()))
             {
                 return null;
             }

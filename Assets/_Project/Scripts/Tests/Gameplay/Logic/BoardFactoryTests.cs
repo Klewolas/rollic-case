@@ -54,5 +54,16 @@ namespace RollicCase.Tests.Gameplay.Logic
 
             Assert.AreEqual(new Vector2Int(1, 2), second.Blocks[0].Position);
         }
+
+        [Test]
+        public void Create_BlockWithFeatureData_AttachesCreatedFeature()
+        {
+            _level.AddBlock(new BlockData(_red, new Vector2Int(4, 0), Shapes.Single, new[] { new FakeFeatureData() }));
+
+            BoardModel board = _factory.Create(_level);
+
+            Assert.AreEqual(1, board.Blocks[1].Features.Count);
+            Assert.IsInstanceOf<FakeExitListener>(board.Blocks[1].Features[0]);
+        }
     }
 }

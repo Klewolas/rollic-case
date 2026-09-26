@@ -48,6 +48,7 @@ namespace RollicCase.Gameplay.Logic
             }
 
             Board.Remove(block);
+            NotifyBlockExited(block);
 
             if (Board.Blocks.Count == 0)
             {
@@ -63,6 +64,14 @@ namespace RollicCase.Gameplay.Logic
             if (State == LevelState.Playing)
             {
                 Timer.Tick(deltaSeconds);
+            }
+        }
+
+        private void NotifyBlockExited(BlockModel block)
+        {
+            for (int i = 0; i < Board.Blocks.Count; i++)
+            {
+                Board.Blocks[i].NotifyBlockExited(block);
             }
         }
 

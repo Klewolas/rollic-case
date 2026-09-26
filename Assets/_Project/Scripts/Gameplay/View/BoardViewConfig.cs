@@ -19,6 +19,7 @@ namespace RollicCase.Gameplay.View
         [SerializeField] private Mesh _wall;
         [SerializeField] private Mesh _corner;
         [SerializeField] private Mesh _door;
+        [SerializeField] private Mesh _doorArrow;
 
         [Header("Doors")]
         [Tooltip("How strongly a door glows in its color.")]
@@ -34,6 +35,7 @@ namespace RollicCase.Gameplay.View
         public Mesh Wall => _wall;
         public Mesh Corner => _corner;
         public Mesh Door => _door;
+        public Mesh DoorArrow => _doorArrow;
         public float DoorGlow => _doorGlow;
         public float CameraTilt => _cameraTilt;
         public float CameraPadding => _cameraPadding;

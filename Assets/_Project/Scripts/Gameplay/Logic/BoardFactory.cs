@@ -13,7 +13,7 @@ namespace RollicCase.Gameplay.Logic
             for (int i = 0; i < blocks.Length; i++)
             {
                 BlockData block = level.Blocks[i];
-                blocks[i] = new BlockModel(i, block.Color, block.Origin, block.Cells);
+                blocks[i] = new BlockModel(i, block.Color, block.Origin, block.Cells, CreateFeatures(block));
             }
 
             var doors = new DoorModel[level.Doors.Count];
@@ -25,6 +25,18 @@ namespace RollicCase.Gameplay.Logic
             }
 
             return new BoardModel(level.Width, level.Height, blocks, doors);
+        }
+
+        private static BlockFeature[] CreateFeatures(BlockData block)
+        {
+            var features = new BlockFeature[block.Features.Count];
+
+            for (int i = 0; i < features.Length; i++)
+            {
+                features[i] = block.Features[i].CreateFeature();
+            }
+
+            return features;
         }
     }
 }

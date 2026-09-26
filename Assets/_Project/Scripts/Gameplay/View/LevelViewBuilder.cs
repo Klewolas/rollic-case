@@ -40,7 +40,7 @@ namespace RollicCase.Gameplay.View
             {
                 DoorView view = _doorFactory.Create();
                 view.transform.SetParent(_root.Doors, false);
-                view.Initialize(_boardMeshes.BuildDoor(_board, door), DoorTint(door));
+                view.Initialize(_boardMeshes.BuildDoor(_board, door), _boardMeshes.BuildDoorArrows(_board, door), DoorTint(door));
             }
 
             foreach (BlockModel block in _board.Blocks)
