@@ -3,7 +3,7 @@ using Zenject;
 
 namespace RollicCase.UI.Popups
 {
-    /// <summary>Binds the popup system to the scene's popup canvas and catalog.</summary>
+    /// <summary>Binds the popup system to the scene's popup canvas and catalog, and lets close buttons close the top popup.</summary>
     public sealed class PopupInstaller : MonoInstaller
     {
         [SerializeField] private PopupCatalog _catalog;
@@ -19,6 +19,9 @@ namespace RollicCase.UI.Popups
             Container.Bind<IPopupFactory>().To<PopupFactory>().AsSingle();
             Container.Bind<IPopupService>().To<PopupService>().AsSingle();
             Container.BindInterfacesTo<PopupBackButtonHandler>().AsSingle();
+
+            Container.DeclareSignal<ClosePopupRequestedSignal>();
+            Container.BindInterfacesTo<PopupCloseHandler>().AsSingle();
         }
     }
 }

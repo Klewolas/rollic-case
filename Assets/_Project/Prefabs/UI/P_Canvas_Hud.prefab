@@ -987,7 +987,7 @@ GameObject:
   - component: {fileID: 2509416887950866885}
   - component: {fileID: 4951665982515482018}
   - component: {fileID: 7330306502789776590}
-  - component: {fileID: 4829875403001231945}
+  - component: {fileID: 2877295112453943582}
   m_Layer: 0
   m_Name: LevelLabel
   m_TagString: Untagged
@@ -1113,7 +1113,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4829875403001231945
+--- !u!114 &2877295112453943582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1122,7 +1122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8976235934925810052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a10896d00ec9ad74c99f26c2004f3a9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 461cf9525e4f0f8439ef26f9e52d0a5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 7330306502789776590}
