@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57faa2cdd5a4be941b0d1e46c60eac14, type: 3}
+  m_Name: SO_Level_005
+  m_EditorClassIdentifier: 
+  _width: 7
+  _height: 8
+  _timerSeconds: 120
+  _blocks:
+  - _color: {fileID: 11400000, guid: 7478e01cf90455d4188ab552b171cea8, type: 2}
+    _origin: {x: 2, y: 0}
+    _cells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 1, y: 1}
+    _features: []
+  - _color: {fileID: 11400000, guid: 60ea660512667624bb54d99f203520d6, type: 2}
+    _origin: {x: 0, y: 6}
+    _cells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    _features: []
+  - _color: {fileID: 11400000, guid: 06cff1ba5ef3b08408b4b0222edc061a, type: 2}
+    _origin: {x: 6, y: 0}
+    _cells:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: 2}
+    _features: []
+  - _color: {fileID: 11400000, guid: f06515f360aae0642a3bda2f6ed56a5d, type: 2}
+    _origin: {x: 3, y: 3}
+    _cells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    _features: []
+  - _color: {fileID: 11400000, guid: 7478e01cf90455d4188ab552b171cea8, type: 2}
+    _origin: {x: 3, y: 6}
+    _cells:
+    - {x: 0, y: 0}
+    _features: []
+  - _color: {fileID: 11400000, guid: 60ea660512667624bb54d99f203520d6, type: 2}
+    _origin: {x: 0, y: 2}
+    _cells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    _features: []
+  - _color: {fileID: 11400000, guid: 06cff1ba5ef3b08408b4b0222edc061a, type: 2}
+    _origin: {x: 5, y: 7}
+    _cells:
+    - {x: 0, y: 0}
+    _features: []
+  - _color: {fileID: 11400000, guid: f06515f360aae0642a3bda2f6ed56a5d, type: 2}
+    _origin: {x: 1, y: 0}
+    _cells:
+    - {x: 0, y: 0}
+    _features: []
+  _doors:
+  - _side: 1
+    _start: 2
+    _length: 3
+    _color: {fileID: 11400000, guid: 7478e01cf90455d4188ab552b171cea8, type: 2}
+  - _side: 3
+    _start: 3
+    _length: 2
+    _color: {fileID: 11400000, guid: 60ea660512667624bb54d99f203520d6, type: 2}
+  - _side: 2
+    _start: 5
+    _length: 3
+    _color: {fileID: 11400000, guid: 06cff1ba5ef3b08408b4b0222edc061a, type: 2}
+  - _side: 0
+    _start: 0
+    _length: 3
+    _color: {fileID: 11400000, guid: f06515f360aae0642a3bda2f6ed56a5d, type: 2}
+  references:
+    version: 2
+    RefIds: []
