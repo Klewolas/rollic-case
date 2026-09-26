@@ -1,19 +1,19 @@
 {
-    "name": "RollicCase.Editor",
-    "rootNamespace": "RollicCase.Editor",
+    "name": "RollicCase.Sandbox",
+    "rootNamespace": "RollicCase.Sandbox",
     "references": [
         "RollicCase.Gameplay",
-        "RollicCase.Sandbox"
+        "Zenject"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_EDITOR"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

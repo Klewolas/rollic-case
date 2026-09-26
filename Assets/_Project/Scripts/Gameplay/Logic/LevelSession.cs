@@ -17,6 +17,9 @@ namespace RollicCase.Gameplay.Logic
         /// <summary>Raised when the state changes from Playing to Won or Failed.</summary>
         public event Action<LevelState> StateChanged;
 
+        /// <summary>Raised when a block has left the board through a door.</summary>
+        public event Action<BlockModel> BlockExited;
+
         public LevelState State { get; private set; } = LevelState.Playing;
         public BoardModel Board { get; }
         public LevelTimer Timer { get; }
@@ -49,6 +52,7 @@ namespace RollicCase.Gameplay.Logic
 
             Board.Remove(block);
             NotifyBlockExited(block);
+            BlockExited?.Invoke(block);
 
             if (Board.Blocks.Count == 0)
             {

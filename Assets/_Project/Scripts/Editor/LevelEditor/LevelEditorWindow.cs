@@ -105,9 +105,11 @@ namespace RollicCase.Editor.LevelEditor
 
             VisualElement fileButtons = CreateRow();
             fileButtons.Add(new Button(CreateNewLevel) { text = "New", tooltip = "Create a new empty level." });
-            fileButtons.Add(new Button(Save) { text = "Save", tooltip = "Check the level and save it." });
+            fileButtons.Add(new Button(() => TrySave()) { text = "Save", tooltip = "Check the level and save it." });
             fileButtons.Add(new Button(SaveCopy) { text = "Save As", tooltip = "Save a copy of this level under a new name." });
             section.Add(fileButtons);
+
+            section.Add(new Button(PlayLevel) { text = "Play", tooltip = "Save the level and play it in the Game_Sandbox test scene." });
 
             _catalogLabel = new Label { style = { whiteSpace = WhiteSpace.Normal } };
             _addToCatalogButton = new Button(AddToCatalog) { text = "Add to Level Catalog", tooltip = "Add this level to the end of the game's level order." };
@@ -422,22 +424,37 @@ namespace RollicCase.Editor.LevelEditor
             }
         }
 
-        private void Save()
+        private bool TrySave()
         {
             if (_level == null)
             {
-                return;
+                return false;
             }
 
             IReadOnlyList<LevelIssue> issues = _validator.Validate(_level);
 
             if (issues.Count > 0 && !EditorUtility.DisplayDialog("This level has problems", Describe(issues) + "\nSave it anyway?", "Save Anyway", "Cancel"))
             {
-                return;
+                return false;
             }
 
             AssetDatabase.SaveAssetIfDirty(_level);
             ShowNotification(new GUIContent("Level saved"));
+            return true;
+        }
+
+        private void PlayLevel()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                ShowNotification(new GUIContent("Stop Play mode first"));
+                return;
+            }
+
+            if (TrySave())
+            {
+                SandboxLauncher.Play(_level);
+            }
         }
 
         private void AddToCatalog()

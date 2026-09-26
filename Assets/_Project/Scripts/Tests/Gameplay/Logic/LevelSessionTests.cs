@@ -63,6 +63,28 @@ namespace RollicCase.Tests.Gameplay.Logic
         }
 
         [Test]
+        public void TryExit_MatchingDoor_RaisesBlockExited()
+        {
+            BlockModel raised = null;
+            _session.BlockExited += block => raised = block;
+
+            _session.TryExit(_red, BoardSide.Top);
+
+            Assert.AreSame(_red, raised);
+        }
+
+        [Test]
+        public void TryExit_NoMatchingDoor_DoesNotRaiseBlockExited()
+        {
+            bool raised = false;
+            _session.BlockExited += _ => raised = true;
+
+            _session.TryExit(_red, BoardSide.Bottom);
+
+            Assert.IsFalse(raised);
+        }
+
+        [Test]
         public void TryExit_OtherBlockListensForExits_NotifiesIt()
         {
             var listener = new FakeExitListener();
